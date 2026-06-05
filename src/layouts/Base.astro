@@ -1,0 +1,175 @@
+---
+const { frontmatter } = Astro.props;
+const title = Astro.props.title ?? frontmatter?.title ?? 'IR Reading Group';
+const description = Astro.props.description ?? frontmatter?.description ?? 'A reading group for information retrieval, search, ranking, recommendation, and retrieval systems.';
+const base = import.meta.env.BASE_URL;
+
+const nav = [
+  { href: base, label: 'Home' },
+  { href: `${base}schedule/`, label: 'Schedule' },
+  { href: `${base}papers/`, label: 'Papers' },
+  { href: `${base}logistics/`, label: 'Logistics' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href={`${base}favicon.svg`} />
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --bg: #faf8f3;
+        --panel: #ffffff;
+        --ink: #161616;
+        --muted: #66615a;
+        --line: #e8e0d6;
+        --accent: #2857d9;
+        --accent-soft: #eef3ff;
+        --shadow: 0 18px 50px rgba(33, 29, 22, 0.08);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(40, 87, 217, 0.10), transparent 30rem),
+          var(--bg);
+        color: var(--ink);
+        line-height: 1.6;
+      }
+      a { color: var(--accent); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+      a:hover { text-decoration-thickness: 0.14em; }
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(18px);
+        background: color-mix(in srgb, var(--bg) 82%, transparent);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-wrap, main, .site-footer {
+        width: min(1080px, calc(100% - 2rem));
+        margin: 0 auto;
+      }
+      .nav-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.9rem 0;
+      }
+      .brand {
+        color: var(--ink);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-decoration: none;
+      }
+      nav { display: flex; gap: 0.35rem; flex-wrap: wrap; justify-content: flex-end; }
+      nav a {
+        color: var(--muted);
+        padding: 0.42rem 0.7rem;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 0.95rem;
+      }
+      nav a:hover { color: var(--ink); background: var(--panel); }
+      main { padding: 3rem 0 4.5rem; }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+        gap: 1.25rem;
+        align-items: stretch;
+        margin-bottom: 2rem;
+      }
+      .card, .markdown-body {
+        background: color-mix(in srgb, var(--panel) 94%, transparent);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+      .hero-copy { padding: clamp(1.25rem, 3vw, 2.4rem); }
+      .eyebrow {
+        margin: 0 0 0.75rem;
+        color: var(--accent);
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+      h1, h2, h3 { line-height: 1.15; letter-spacing: -0.04em; }
+      h1 { margin: 0; font-size: clamp(2.4rem, 7vw, 5.2rem); }
+      h2 { margin-top: 2.1rem; font-size: clamp(1.5rem, 3vw, 2.2rem); }
+      h3 { margin-top: 1.6rem; font-size: 1.25rem; }
+      p { color: var(--muted); }
+      .lede { font-size: clamp(1.05rem, 2vw, 1.3rem); max-width: 65ch; }
+      .meta-card { padding: 1.35rem; display: grid; gap: 1rem; }
+      .meta-item { padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+      .meta-item:last-child { border-bottom: 0; padding-bottom: 0; }
+      .meta-label { color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.09em; font-weight: 800; }
+      .meta-value { margin-top: 0.2rem; font-weight: 750; }
+      .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.3rem; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.7rem;
+        padding: 0.62rem 1rem;
+        border-radius: 999px;
+        background: var(--ink);
+        color: white;
+        font-weight: 750;
+        text-decoration: none;
+      }
+      .button.secondary { background: var(--accent-soft); color: var(--accent); }
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 2.2rem 0 0.8rem;
+      }
+      .section-head h2 { margin: 0; }
+      .table-wrap { overflow-x: auto; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); }
+      table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+      th, td { padding: 0.9rem 1rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+      th { color: var(--muted); background: #fffbf5; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      tr:last-child td { border-bottom: 0; }
+      tbody tr:hover { background: #f8fbff; }
+      code { background: #f2eee7; padding: 0.15rem 0.35rem; border-radius: 0.4rem; }
+      pre { overflow-x: auto; padding: 1rem; border-radius: 1rem; }
+      blockquote { margin: 1.5rem 0; padding: 0.2rem 1.1rem; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 1rem 1rem 0; }
+      .markdown-body { padding: clamp(1.2rem, 3vw, 2.4rem); }
+      .markdown-body > :first-child { margin-top: 0; }
+      .site-footer { padding: 0 0 2rem; color: var(--muted); font-size: 0.9rem; }
+      @media (max-width: 760px) {
+        .nav-wrap { align-items: flex-start; flex-direction: column; }
+        nav { justify-content: flex-start; }
+        .hero { grid-template-columns: 1fr; }
+        main { padding-top: 1.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-wrap">
+        <a class="brand" href={base}>IR Reading Group</a>
+        <nav aria-label="Primary navigation">
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+      </div>
+    </header>
+    <main>
+      <article class="markdown-body">
+        <slot />
+      </article>
+    </main>
+    <footer class="site-footer">
+      Built with Astro. Edit content in Git, deploy via GitHub Pages.
+    </footer>
+  </body>
+</html>

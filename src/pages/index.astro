@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
+
+const upcoming = [
+  {
+    date: '2026-06-10',
+    topic: 'Neural retrieval',
+    paper: 'ColBERT: Efficient and Effective Passage Search',
+    presenter: 'TBD',
+    links: [
+      { href: 'https://arxiv.org/abs/2004.12832', label: 'paper' },
+      { href: `${base}notes/2026-06-10-colbert/`, label: 'notes' },
+    ],
+  },
+  {
+    date: '2026-06-17',
+    topic: 'Retrieval-augmented generation',
+    paper: 'TBD',
+    presenter: 'TBD',
+    links: [],
+  },
+  {
+    date: '2026-06-24',
+    topic: 'Learning to rank',
+    paper: 'TBD',
+    presenter: 'TBD',
+    links: [],
+  },
+];
+---
+<Base title="IR Reading Group">
+  <section class="hero">
+    <div class="card hero-copy">
+      <p class="eyebrow">Information Retrieval · Search · Ranking</p>
+      <h1>IR Reading Group</h1>
+      <p class="lede">
+        A lightweight, Git-managed reading group site for papers, schedules, presenters,
+        and discussion notes.
+      </p>
+      <div class="actions">
+        <a class="button" href={`${base}schedule/`}>View schedule</a>
+        <a class="button secondary" href={`${base}papers/`}>Paper backlog</a>
+      </div>
+    </div>
+
+    <aside class="card meta-card" aria-label="Meeting details">
+      <div class="meta-item">
+        <div class="meta-label">When</div>
+        <div class="meta-value">Weekly, TBD</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Where</div>
+        <div class="meta-value">TBD / hybrid</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Format</div>
+        <div class="meta-value">30 min paper summary + 30 min discussion</div>
+      </div>
+    </aside>
+  </section>
+
+  <div class="section-head">
+    <h2>Upcoming sessions</h2>
+    <a href={`${base}schedule/`}>Full schedule →</a>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Topic</th>
+          <th>Paper</th>
+          <th>Presenter</th>
+          <th>Links</th>
+        </tr>
+      </thead>
+      <tbody>
+        {upcoming.map((row) => (
+          <tr>
+            <td>{row.date}</td>
+            <td>{row.topic}</td>
+            <td>{row.paper}</td>
+            <td>{row.presenter}</td>
+            <td>
+              {row.links.length ? row.links.map((link, index) => (
+                <>{index > 0 ? ' · ' : ''}<a href={link.href}>{link.label}</a></>
+              )) : '—'}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Base>
