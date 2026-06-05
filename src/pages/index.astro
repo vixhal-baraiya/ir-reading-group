@@ -1,96 +1,91 @@
 ---
 import Base from '../layouts/Base.astro';
-const base = import.meta.env.BASE_URL;
 
-const upcoming = [
+const topics = [
   {
-    date: '2026-06-10',
-    topic: 'Neural retrieval',
-    paper: 'ColBERT: Efficient and Effective Passage Search',
-    presenter: 'TBD',
+    week: 'Week 23',
+    date: 'Jun 6, 2026',
+    title: 'Month 1: CS224W — Machine Learning with Graphs',
+    description:
+      'First month only: finish the CS224W series. Plan is 20 lecture slots, one lecture per day, and no other readings for now.',
     links: [
-      { href: 'https://arxiv.org/abs/2004.12832', label: 'paper' },
-      { href: `${base}notes/2026-06-10-colbert/`, label: 'notes' },
+      { label: 'Course content', href: 'https://web.stanford.edu/class/cs224w/index.html#content' },
+      { label: 'Schedule', href: 'https://web.stanford.edu/class/cs224w/index.html#schedule' },
+      { label: 'Notes PDF', href: 'https://archives.leni.sh/stanford/CS224w.pdf' },
     ],
   },
-  {
-    date: '2026-06-17',
-    topic: 'Retrieval-augmented generation',
-    paper: 'TBD',
-    presenter: 'TBD',
-    links: [],
-  },
-  {
-    date: '2026-06-24',
-    topic: 'Learning to rank',
-    paper: 'TBD',
-    presenter: 'TBD',
-    links: [],
-  },
+];
+
+const lectures = [
+  'Introduction',
+  'Node embeddings',
+  'Graph neural networks',
+  'General perspective on GNNs',
+  'GNN augmentation and training',
+  'Theory of GNNs',
+  'Powerful graph encoders',
+  'Graph Transformers',
+  'Heterogeneous graphs',
+  'Knowledge graphs',
+  'GNNs for recommender systems',
+  'Relational Deep Learning',
+  'Advanced architectures in RDL',
+  'Advanced topics in GNNs',
+  'Foundation models for Knowledge Graphs',
+  'LLM + GNN',
+  'Agents + Graphs',
+  'Deep generative models for graphs',
+  'Conclusion',
+  'Recap / buffer',
 ];
 ---
-<Base title="IR Reading Group">
-  <section class="hero">
-    <div class="card hero-copy">
-      <p class="eyebrow">Information Retrieval · Search · Ranking</p>
-      <h1>IR Reading Group</h1>
-      <p class="lede">
-        A lightweight, Git-managed reading group site for papers, schedules, presenters,
-        and discussion notes.
-      </p>
-      <div class="actions">
-        <a class="button" href={`${base}schedule/`}>View schedule</a>
-        <a class="button secondary" href={`${base}papers/`}>Paper backlog</a>
-      </div>
-    </div>
+<Base title="IR Reading Group" description="One-page overview for the IR Reading Group.">
+  <h1>IR Reading Group</h1>
+  <p>
+    A one-page overview of what we are reading. Month 1 is fully dedicated to Stanford CS224W,
+    <em>Machine Learning with Graphs</em>.
+  </p>
 
-    <aside class="card meta-card" aria-label="Meeting details">
-      <div class="meta-item">
-        <div class="meta-label">When</div>
-        <div class="meta-value">Weekly, TBD</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Where</div>
-        <div class="meta-value">TBD / hybrid</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Format</div>
-        <div class="meta-value">30 min paper summary + 30 min discussion</div>
-      </div>
-    </aside>
+  <div class="toolbar" aria-label="Topic list controls">
+    <div class="search-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="m20 20-4-4"></path>
+      </svg>
+      <span>Search topics...</span>
+    </div>
+    <div class="sort-label">Oldest first</div>
+  </div>
+
+  <section class="topic-list" aria-label="Reading group topics">
+    {topics.map((topic) => (
+      <article class="topic-row">
+        <div class="week">
+          <div>{topic.week}</div>
+          <div>{topic.date}</div>
+        </div>
+        <div class="topic">
+          <h2>{topic.title}</h2>
+          <p>{topic.description}</p>
+          <div class="links">
+            {topic.links.map((link) => (
+              <span><a href={link.href}>{link.label}</a></span>
+            ))}
+          </div>
+        </div>
+      </article>
+    ))}
   </section>
 
-  <div class="section-head">
-    <h2>Upcoming sessions</h2>
-    <a href={`${base}schedule/`}>Full schedule →</a>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Topic</th>
-          <th>Paper</th>
-          <th>Presenter</th>
-          <th>Links</th>
-        </tr>
-      </thead>
-      <tbody>
-        {upcoming.map((row) => (
-          <tr>
-            <td>{row.date}</td>
-            <td>{row.topic}</td>
-            <td>{row.paper}</td>
-            <td>{row.presenter}</td>
-            <td>
-              {row.links.length ? row.links.map((link, index) => (
-                <>{index > 0 ? ' · ' : ''}<a href={link.href}>{link.label}</a></>
-              )) : '—'}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+  <section class="month-plan" aria-label="Month 1 lecture plan">
+    <h2>Month 1 lecture plan</h2>
+    <div class="lecture-grid">
+      {lectures.map((lecture, index) => (
+        <div class="lecture-cell">
+          <span>Lecture {index + 1}</span>
+          <strong>{lecture}</strong>
+        </div>
+      ))}
+    </div>
+  </section>
 </Base>
