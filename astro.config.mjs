@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import remarkGfm from 'remark-gfm';
 
@@ -10,7 +11,9 @@ export default defineConfig({
   base,
   integrations: [sitemap()],
   markdown: {
-    remarkPlugins: [remarkGfm],
+    processor: unified({
+      remarkPlugins: [remarkGfm],
+    }),
     shikiConfig: {
       theme: 'github-light',
     },
