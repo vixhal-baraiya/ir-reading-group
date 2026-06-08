@@ -88,4 +88,108 @@ const lectures = [
       ))}
     </div>
   </section>
+
+  <section class="db-internals" aria-label="Database Internals notes">
+    <h2>Database Internals — Chapter 1 Notes</h2>
+    <p class="db-intro">
+      Database bahar se simple lagta hai, but andar bilkul khatarnaak game chal raha hai — data ko kaise store karna, kaise jaldi dhoondhna, aur crash ke baad kaise bachana.
+    </p>
+
+    <div class="db-grid">
+
+      <div class="db-card">
+        <h3>DBMS Architecture</h3>
+        <p>Query ka flow layers cross karta hai before disk pe jaane se:</p>
+        <div class="flow-chain">
+          <span>Client</span>
+          <span>Transport</span>
+          <span>Query Processor</span>
+          <span>Query Optimizer</span>
+          <span>Execution Engine</span>
+          <span>Storage Engine</span>
+        </div>
+      </div>
+
+      <div class="db-card">
+        <h3>Storage Engine Components</h3>
+        <ul class="db-list">
+          <li><strong>Transaction Manager</strong> — ensures atomicity; ya poora commit, ya rollback</li>
+          <li><strong>Lock Manager</strong> — concurrent users ke beech race conditions se bachata hai</li>
+          <li><strong>Access Methods</strong> — B-Tree, LSM Tree, Hash Index, Heap File</li>
+          <li><strong>Buffer Manager</strong> — disk slow hai, RAM fast — pages cache karta hai</li>
+          <li><strong>Recovery Manager</strong> — crash ke baad WAL se redo/undo decide karta hai</li>
+        </ul>
+      </div>
+
+      <div class="db-card">
+        <h3>Memory vs Disk DB</h3>
+        <ul class="db-list">
+          <li>Disk DB mein data disk pe, RAM sirf cache ke liye</li>
+          <li>Memory DB mein data RAM mein, disk sirf logs/snapshots ke liye</li>
+          <li>In-memory DB sirf "disk DB with huge cache" <em>nahi</em> hota — internal structure fundamentally different hota hai</li>
+          <li>Memory DB durability ke liye WAL + snapshots + checkpointing use karta hai</li>
+        </ul>
+      </div>
+
+      <div class="db-card">
+        <h3>Row vs Column Layout</h3>
+        <div class="compare-grid">
+          <div class="compare-col">
+            <div class="compare-label row-label">Row Store</div>
+            <p>Full row saath stored. OLTP ke liye best — single user fetch, payment update, login.</p>
+            <div class="examples">PostgreSQL · MySQL · SQLite</div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label col-label">Column Store</div>
+            <p>Same column saath stored. Analytics ke liye best — AVG, SUM, dashboard scans.</p>
+            <div class="examples">ClickHouse · Parquet · ORC</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="db-card">
+        <h3>Data File Types</h3>
+        <ul class="db-list">
+          <li><strong>Heap File</strong> — insert order mein, fast writes, lookup ke liye index chahiye</li>
+          <li><strong>Hash-organized</strong> — exact lookup fast, range scan weak (hash order destroy karta hai)</li>
+          <li><strong>Index-organized Table</strong> — data primary key order mein, range scan + lookup dono achhe</li>
+        </ul>
+      </div>
+
+      <div class="db-card">
+        <h3>Index Types</h3>
+        <ul class="db-list">
+          <li><strong>Primary Index</strong> — primary key pe, usually unique</li>
+          <li><strong>Secondary Index</strong> — non-primary field pe, duplicates allowed</li>
+          <li><strong>Clustered</strong> — physical data order = index key order, range scan fast</li>
+          <li><strong>Nonclustered</strong> — index sorted but data file us order mein nahi</li>
+          <li><strong>Indirection trick</strong> — secondary index physical location store karne ki jagah primary key store karta hai, maintenance easy hoti hai</li>
+        </ul>
+      </div>
+
+      <div class="db-card">
+        <h3>Three Big Ideas</h3>
+        <ul class="db-list">
+          <li><strong>Buffering</strong> — small writes collect karo, ek large sequential write karo. Crash safety ke liye WAL.</li>
+          <li><strong>Immutability</strong> — old file modify nahi, new version likho. Concurrent reads safe, compaction needed.</li>
+          <li><strong>Ordering</strong> — data key order mein rakho. Range scans fast, but writes harder.</li>
+        </ul>
+        <p style="margin-top:0.8rem; font-size:0.95rem; color: var(--muted);">Tombstones: delete = marker likhna, actual removal compaction mein hota hai.</p>
+      </div>
+
+      <div class="db-card db-card--wide">
+        <h3>The Real Lesson — Trade-offs</h3>
+        <div class="tradeoff-grid">
+          <div class="tradeoff-item"><span>Row store</span><em>OLTP ✓ &nbsp;/&nbsp; analytics ✗</em></div>
+          <div class="tradeoff-item"><span>Column store</span><em>analytics ✓ &nbsp;/&nbsp; full-row fetch ✗</em></div>
+          <div class="tradeoff-item"><span>Hash file</span><em>exact lookup ✓ &nbsp;/&nbsp; range scan ✗</em></div>
+          <div class="tradeoff-item"><span>Heap file</span><em>insert easy ✓ &nbsp;/&nbsp; needs index ✗</em></div>
+          <div class="tradeoff-item"><span>Memory DB</span><em>fast ✓ &nbsp;/&nbsp; durability tricky ✗</em></div>
+          <div class="tradeoff-item"><span>Immutable storage</span><em>writes easy ✓ &nbsp;/&nbsp; compaction cost ✗</em></div>
+          <div class="tradeoff-item"><span>Ordered storage</span><em>range scan ✓ &nbsp;/&nbsp; writes harder ✗</em></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 </Base>
