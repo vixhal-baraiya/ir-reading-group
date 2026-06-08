@@ -1,5 +1,5 @@
 ---
-title: "Chapter 1 — Database Internals"
+title: "Chapter 1 : Database Internals"
 chapter: 1
 ---
 
