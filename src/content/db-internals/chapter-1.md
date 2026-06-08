@@ -1,3 +1,8 @@
+---
+title: "Chapter 1 — Database Internals"
+chapter: 1
+---
+
 Chapter 1 ka main point ye hai: **database bahar se simple lagta hai, but andar bilkul kahtarnaak game chal raha hai ki data ko kaise store karna, kaise jaldi dhoondhna, aur crash ke baad kaise bachana.** 
 
 ---
@@ -332,7 +337,7 @@ Ye logs use karta hai, jise later chapters mein WAL/write-ahead log ke naam se d
 
 # 4. Memory-based vs disk-based DBMS
 
-ek important classification...
+Ab chapter ek important classification deta hai.
 
 Database primarily kahan data rakhta hai?
 
@@ -388,7 +393,7 @@ Isliye memory database aur disk database ka internal structure kaafi different h
 
 ---
 
-## Important point: in-memory DB just “disk DB with huge cache” nahi hota
+## Important point: in-memory DB just "disk DB with huge cache" nahi hota
 
 Ye chapter ka solid point hai.
 
